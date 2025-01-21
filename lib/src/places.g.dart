@@ -69,7 +69,7 @@ PlacesSearchResult _$PlacesSearchResultFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PlacesSearchResultToJson(PlacesSearchResult instance) =>
     <String, dynamic>{
       'icon': instance.icon,
-      'geometry': instance.geometry?.let(geometryToJson),
+      'geometry': instance.geometry,
       'name': instance.name,
       'opening_hours': instance.openingHours,
       'photos': instance.photos,
@@ -85,23 +85,6 @@ Map<String, dynamic> _$PlacesSearchResultToJson(PlacesSearchResult instance) =>
       'id': instance.id,
       'reference': instance.reference,
     };
-
-Map<String, dynamic>? geometryToJson(Geometry geometry) {
-  return {
-    ...geometry.toJson(),
-    'location': geometry.location.toJson(),
-    'bounds': geometry.bounds?.toJson(),
-    'viewport': geometry.viewport?.let((v) => {
-      ...v.toJson(),
-      'northeast': v.northeast.toJson(),
-      'southwest': v.southwest.toJson(),
-    }),
-  };
-}
-
-extension Let<T> on T? {
-  R? let<R>(R Function(T) op) => this == null ? null : op(this as T);
-}
 
 const _$PriceLevelEnumMap = {
   PriceLevel.free: 0,
@@ -202,7 +185,7 @@ Map<String, dynamic> _$OpeningHoursDetailToJson(OpeningHoursDetail instance) =>
 OpeningHoursPeriodDate _$OpeningHoursPeriodDateFromJson(
         Map<String, dynamic> json) =>
     OpeningHoursPeriodDate(
-      day: json['day'] as int,
+      day: (json['day'] as num).toInt(),
       time: json['time'] as String,
     );
 
@@ -309,7 +292,9 @@ PlacesAutocompleteResponse _$PlacesAutocompleteResponseFromJson(
       status: json['status'] as String,
       errorMessage: json['error_message'] as String?,
       predictions: (json['predictions'] as List<dynamic>?)
-              ?.map((e) => Prediction.fromJson(e as Map<String, dynamic>))
+              ?.map(
+                (e) => Prediction.fromJson((e as Map).cast<String, dynamic>()),
+              )
               .toList() ??
           [],
     );
@@ -319,7 +304,7 @@ Map<String, dynamic> _$PlacesAutocompleteResponseToJson(
     <String, dynamic>{
       'status': instance.status,
       'error_message': instance.errorMessage,
-      'predictions': instance.predictions,
+      'predictions': instance.predictions.map((e) => e.toJson()).toList(),
     };
 
 Prediction _$PredictionFromJson(Map<String, dynamic> json) => Prediction(
@@ -329,7 +314,7 @@ Prediction _$PredictionFromJson(Map<String, dynamic> json) => Prediction(
               ?.map((e) => Term.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      distanceMeters: json['distance_meters'] as int?,
+      distanceMeters: (json['distance_meters'] as num?)?.toInt(),
       placeId: json['place_id'] as String?,
       reference: json['reference'] as String?,
       types:
@@ -349,13 +334,14 @@ Map<String, dynamic> _$PredictionToJson(Prediction instance) =>
     <String, dynamic>{
       'description': instance.description,
       'id': instance.id,
-      'terms': instance.terms,
+      'terms': instance.terms.map((e) => e.toJson()).toList(),
       'distance_meters': instance.distanceMeters,
       'place_id': instance.placeId,
       'reference': instance.reference,
       'types': instance.types,
-      'matched_substrings': instance.matchedSubstrings,
-      'structured_formatting': instance.structuredFormatting,
+      'matched_substrings':
+          instance.matchedSubstrings.map((e) => e.toJson()).toList(),
+      'structured_formatting': instance.structuredFormatting?.toJson(),
     };
 
 Term _$TermFromJson(Map<String, dynamic> json) => Term(

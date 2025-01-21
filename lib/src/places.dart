@@ -875,7 +875,7 @@ class Review {
   Map<String, dynamic> toJson() => _$ReviewToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PlacesAutocompleteResponse extends GoogleResponseStatus {
   @JsonKey(defaultValue: <Prediction>[])
   final List<Prediction> predictions;
@@ -894,7 +894,7 @@ class PlacesAutocompleteResponse extends GoogleResponseStatus {
   Map<String, dynamic> toJson() => _$PlacesAutocompleteResponseToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Prediction {
   final String? description;
   final String? id;
@@ -934,7 +934,7 @@ class Prediction {
   Map<String, dynamic> toJson() => _$PredictionToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Term {
   final num offset;
   final String value;
