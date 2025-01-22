@@ -311,7 +311,7 @@ Prediction _$PredictionFromJson(Map<String, dynamic> json) => Prediction(
       description: json['description'] as String?,
       id: json['id'] as String?,
       terms: (json['terms'] as List<dynamic>?)
-              ?.map((e) => Term.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => Term.fromJson((e as Map).cast<String, dynamic>()))
               .toList() ??
           [],
       distanceMeters: (json['distance_meters'] as num?)?.toInt(),
